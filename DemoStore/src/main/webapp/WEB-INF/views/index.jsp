@@ -24,7 +24,7 @@
 			<div class="form-group">
 			<label>帳號:</label>
 			<input type="text" name="j_username">
-			<p class="help-block">使用者帳號</p>
+			<p class="help-block">使用者帳號  </p>
 			</div>
 			<div class="form-group">
 			<label>密碼:</label>
