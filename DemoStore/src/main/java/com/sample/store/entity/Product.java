@@ -1,37 +1,64 @@
 package com.sample.store.entity;
 
 public class Product {
-    private String product_id;
-    private String product_name;
-    private String product_category;
-    private int product_price;
-    
-	public String getProduct_id() {
-		return product_id;
-	}
-	public void setProduct_id(String product_id) {
-		this.product_id = product_id;
-	}
-	public String getProduct_name() {
-		return product_name;
-	}
-	public void setProduct_name(String product_name) {
-		this.product_name = product_name;
-	}
-	public String getProduct_category() {
-		return product_category;
-	}
-	public void setProduct_category(String product_category) {
-		this.product_category = product_category;
-	}
-	public int getProduct_price() {
-		return product_price;
-	}
-	public void setProduct_price(int product_price) {
-		this.product_price = product_price;
-	}
-    
+    private long id;
+    private int category;
+    private String desc;
+    private int inventory;
+    private int reorderPoint;
 
     /* getters and setters */
-   
+    public long getId(){
+            return id;
+    }
+    public void setId(long id){
+    	this.id = id;
+    }
+
+    public int getCategory(){
+            return category;
+    }
+    public void setCategory(int category){
+        this.category = category;
+    }
+    
+    public String getDesc(){
+        return desc;
+    }
+    public void setDesc(String desc){
+    	this.desc = desc;
+    }
+
+    public int getInventory(){
+    		return inventory;
+    }
+    public void setInventory(int inventory){
+		this.inventory = inventory;
+    }
+    
+    public int getReorderPoint(){
+    		return reorderPoint;
+    }
+    public void setReorderPoint(int reorderPoint){
+		this.reorderPoint = reorderPoint;
+    }
+
+    /*
+    public Object get(int attr){
+    	switch(attr){
+    	case 0:
+    		return id;
+    	case 1:
+    		return category;
+    	case 2:
+    		return desc;
+    	case 3:
+    		return inventory;
+    	case 4:
+    		return reorderPoint;
+    	default:
+    		return "";
+    	}
+    }
+*/
 }//Product
