@@ -29,16 +29,16 @@ public class ProductDAOImpl implements ProductDAO{
 	}
 
 	public void insert(Product aProduct) {
-		//新增產品(非新廠商)
+
 		// remove first parameter when Id is auto-increment
-	    String sql = "INSERT INTO product (product_id, product_name, product_category, product_price) VALUES(?, ?, ?, ?)";	
+	    String sql = "INSERT INTO product (Category, Description, Inventory, ReorderPoint) VALUES(?, ?, ?, ?)";	
 		try {
 			conn = dataSource.getConnection();
 			smt = conn.prepareStatement(sql);
-			smt.setString(1, aProduct.getProduct_id());
-			smt.setString(2, aProduct.getProduct_name());
-			smt.setString(3, aProduct.getProduct_category());
-			smt.setInt(4, aProduct.getProduct_price());
+			smt.setInt(1, aProduct.getCategory());
+			smt.setString(2, aProduct.getDesc());
+			smt.setInt(3, aProduct.getInventory());
+			smt.setInt(4, aProduct.getReorderPoint());
 			smt.executeUpdate();			
 			smt.close();
  
@@ -57,11 +57,11 @@ public class ProductDAOImpl implements ProductDAO{
 
 	public void delete(Product aProduct) {
 		
-		String sql = "DELETE FROM product WHERE product_id = ?";
+		String sql = "DELETE FROM product WHERE productID = ?";
 		try {
 			conn = dataSource.getConnection();
 			smt = conn.prepareStatement(sql);
-			smt.setString(1, aProduct.getProduct_id());
+			smt.setLong(1, aProduct.getId());
 			smt.executeUpdate();			
 			smt.close();
  
@@ -78,17 +78,17 @@ public class ProductDAOImpl implements ProductDAO{
 	}
 
 	public void update(Product aProduct) {
-		//修改商品
-		String sql = "UPDATE product SET product_name=?, product_category=?, product_price=? "
-				+ "WHERE product_id = ?";
+		
+		String sql = "UPDATE product SET Category=?, Description=?, Inventory=?, ReorderPoint=? "
+				+ "WHERE productID = ?";
 		try {
 			conn = dataSource.getConnection();
 			smt = conn.prepareStatement(sql);
-			smt.setString(1, aProduct.getProduct_name());
-			smt.setString(2, aProduct.getProduct_category());
-			smt.setInt(3, aProduct.getProduct_price());
-			
-			smt.setString(4, aProduct.getProduct_id());
+			smt.setInt(1, aProduct.getCategory());
+			smt.setString(2, aProduct.getDesc());
+			smt.setInt(3, aProduct.getInventory());
+			smt.setInt(4, aProduct.getReorderPoint());
+			smt.setLong(5, aProduct.getId());
 			smt.executeUpdate();			
 			smt.close();
  
@@ -104,25 +104,19 @@ public class ProductDAOImpl implements ProductDAO{
 		}
 		
 	}
-	/*
-	//Inventory �o���
-	public List<Product> getAvailableList() {//庫存
-		String sql = "SELECT * FROM Inventory WHERE product_amount > 0";
+	
+	public List<Product> getAvailableList() {
+		String sql = "SELECT * FROM product WHERE Inventory > 0";
 		return getList(sql);
 	}
 	
 
-	public List<Product> getReorderList() {//庫存
-		String sql = "SELECT * FROM Inventory WHERE Inventory < 10";
+	public List<Product> getReorderList() {
+		String sql = "SELECT * FROM product WHERE Inventory < ReorderPoint";
 		return getList(sql);
 	}
-	 */
-	public List<Product> getCategoryList() {//以產品分類
-		String sql = "SELECT * FROM  Product WHERE Product_category=?";
-		return getList(sql);
-	}
-	
-	public List<Product> getList() {//product的內容
+
+	public List<Product> getList() {
 		String sql = "SELECT * FROM product";
 		return getList(sql);
 	}
@@ -137,16 +131,18 @@ public class ProductDAOImpl implements ProductDAO{
 				+ "JOIN article_category b ON a.articleCategoryID = b.articleCategoryID "
 				+ "ORDER BY articleID DESC";
 		*/
-		try {//product_id, product_name, product_category, product_price
+		try {
 			conn = dataSource.getConnection();
 			smt = conn.prepareStatement(sql);
 			rs = smt.executeQuery();
 			while(rs.next()){
 				Product aProduct = new Product();
-				aProduct.setProduct_id(rs.getString("product_id"));			
-				aProduct.setProduct_name(rs.getString(" product_name"));
-				aProduct.setProduct_category(rs.getString("product_category"));
-				aProduct.setProduct_price(rs.getInt("product_price"));
+				aProduct.setId(rs.getInt("productID"));			
+				aProduct.setCategory(rs.getInt("category"));
+				aProduct.setDesc(rs.getString("description"));
+				//System.out.println(rs.getString("description"));
+				aProduct.setInventory(rs.getInt("inventory"));
+				aProduct.setReorderPoint(rs.getInt("reorderPoint"));
 				productList.add(aProduct);
 			}
 			rs.close();
@@ -165,20 +161,20 @@ public class ProductDAOImpl implements ProductDAO{
 		return productList;
 	}
 
-	public Product get(Product aProduct) {//product_id, product_name, product_category, product_price
-		//列ID搜尋結果
-		String sql = "SELECT * FROM product WHERE product_id = ?";
+	public Product get(Product aProduct) {
+		
+		String sql = "SELECT * FROM product WHERE productID = ?";
 		try {
 			conn = dataSource.getConnection();
 			smt = conn.prepareStatement(sql);
-
+			smt.setLong(1, aProduct.getId());
 			rs = smt.executeQuery();
 			if(rs.next()){
-				aProduct.setProduct_id(rs.getString("product_id"));
-				aProduct.setProduct_name(rs.getString("product_name"));
-				aProduct.setProduct_category(rs.getString("product_category"));
-				aProduct.setProduct_price(rs.getInt("product_price"));
-			
+				aProduct.setId(rs.getInt("productID"));
+				aProduct.setCategory(rs.getInt("category"));
+				aProduct.setDesc(rs.getString("description"));
+				aProduct.setInventory(rs.getInt("inventory"));
+				aProduct.setReorderPoint(rs.getInt("reorderPoint"));
 			}
 			rs.close();
 			smt.close();
@@ -195,8 +191,6 @@ public class ProductDAOImpl implements ProductDAO{
 		}
 		return aProduct;
 	}
-
-	
 
 
 }

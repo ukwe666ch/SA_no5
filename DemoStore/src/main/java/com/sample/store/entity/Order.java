@@ -4,7 +4,7 @@ public class Order {
 	private int order_id;
 	private Date order_date;
 	private String created_by;
-	private int total_price=0;
+	private int total_price;
 	private String update_by;
 	private String update_by_name;
 	private Date updated_date;
