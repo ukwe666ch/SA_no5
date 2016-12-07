@@ -5,7 +5,14 @@ public class Product {
     private String product_name;
     private String product_category;
     private int product_price;
+    //private String firm_id;
     
+//    public String getFirm_id() {
+//		return firm_id;
+//	}
+//    public void setFirm_id(String firm_id) {
+//		this.firm_id = firm_id;
+//	}
 	public String getProduct_id() {
 		return product_id;
 	}
